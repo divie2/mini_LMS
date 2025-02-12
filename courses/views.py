@@ -1,13 +1,21 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated , AllowAny
 
 from rest_framework.views import APIView
 from .models import Course, Enrollment
 from .serializers import CreateCourseSerializer, ListCoursesSerializer, UpdateCourseSerializer, EnrollmentSerializer
 
 class CourseDetailApiView(APIView):
+
+    def get_permissions(self):
+
+        if self.request.method == 'GET':
+            return [AllowAny()]
+
+
+        return [IsAuthenticated()]
 
     def post(self , request):
 
@@ -27,6 +35,7 @@ class CourseDetailApiView(APIView):
             return Response({"error": f"{e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def get(self, request, course_id = None):
+
         """List Course"""
         if course_id:
             try:
@@ -34,8 +43,6 @@ class CourseDetailApiView(APIView):
                 serializer = ListCoursesSerializer(course)
 
                 return Response({'message': 'Course retrieved successfully', 'data': serializer.data}, status=status.HTTP_200_OK)
-
-
 
             except Course.DoesNotExist:
                 return Response({'message': 'Course not found'}, status=status.HTTP_404_NOT_FOUND)
@@ -56,7 +63,7 @@ class CourseDetailApiView(APIView):
 
         try:
                 course = Course.objects.get(pk=course_id)
-                serializer = UpdateCourseSerializer(course, partial=True)
+                serializer = UpdateCourseSerializer(course, data= request.data, partial=True)
                 if serializer.is_valid(raise_exception=True):
                     serializer.save()
                     return Response({'message': 'Course updated successfully', 'data': serializer.data}, status=status.HTTP_200_OK)
@@ -102,7 +109,7 @@ class EnrollmentListCreateAPIView(APIView):
     def post(self, request):
         serializer = EnrollmentSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(user=request.user)
             return Response({'message': 'User enrolled successfully', 'data': serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
