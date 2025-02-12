@@ -55,7 +55,7 @@ class CourseDetailApiView(APIView):
         """Update Course"""
 
         try:
-                course = Course.objects.get(id=course_id)
+                course = Course.objects.get(pk=course_id)
                 serializer = UpdateCourseSerializer(course, partial=True)
                 if serializer.is_valid(raise_exception=True):
                     serializer.save()
@@ -84,7 +84,7 @@ class EnrollmentListCreateAPIView(APIView):
 
     def get(self, request):
 
-        
+
         user_id = request.query_params.get('user_id')
         course_id = request.query_params.get('course_id')
 
