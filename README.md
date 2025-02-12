@@ -162,3 +162,13 @@ This is a mini Learning Management System (LMS) backend built with Django REST F
 ```bash
 git clone https://github.com/your-username/your-repo.git
 cd your-repo
+```
+### **Access the API**
+   -The API is hosted at: https://mini-lms.onrender.com.
+
+   -Use tools like Postman or cURL to interact with the API.
+
+   -For protected endpoints, include the token in the Authorization header:
+      **Authorization**: Token your_token_key
+   
+###
