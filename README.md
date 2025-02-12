@@ -23,7 +23,7 @@ This is a mini Learning Management System (LMS) backend built with Django REST F
 
 ### **Authentication**
 - **Obtain Token**:
-  - **POST** `https://mini-lms.onrender.com/api-token-auth/`
+  - **POST** `https://mini-lms.onrender.com/api/token`
   - Request Body:
     ```json
     {
@@ -144,8 +144,8 @@ This is a mini Learning Management System (LMS) backend built with Django REST F
     }
     ```
 
-- **Retrieve an Enrollment**:
-  - **GET** `https://mini-lms.onrender.com/enrollments/<id>/`
+- **Retrieve an Enrollment by course id or user id**:
+  - **GET** `https://mini-lms.onrender.com/enrollments?course_id=1/`
   - Response:
     ```json
     {
@@ -155,11 +155,6 @@ This is a mini Learning Management System (LMS) backend built with Django REST F
     }
     ```
 
-- **Delete an Enrollment**:
-  - **DELETE** `https://mini-lms.onrender.com/enrollments/<id>/`
-  - Response: `204 No Content`
-
----
 
 ## **Setup Instructions**
 
