@@ -7,6 +7,12 @@ from rest_framework.views import APIView
 from .models import Course, Enrollment
 from .serializers import CreateCourseSerializer, ListCoursesSerializer, UpdateCourseSerializer, EnrollmentSerializer
 
+class Homepage(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+
+        return Response({'message': 'Welcome To LMS'}, status=status.HTTP_200_OK)
+
 class CourseDetailApiView(APIView):
 
     def get_permissions(self):
@@ -34,17 +40,29 @@ class CourseDetailApiView(APIView):
 
             return Response({"error": f"{e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    def get(self, request, course_id = None):
+    def get(self, request):
 
         """List Course"""
-        if course_id:
-            try:
-                course = Course.objects.get(pk=course_id)
-                serializer = ListCoursesSerializer(course)
+
+
+
+        try:
+            user_id = request.query_params.get('user_id')
+            price = request.query_params.get('price')
+
+            queryset = Course.objects.all()
+
+            if user_id:
+                queryset = queryset.filter(user_id=user_id)
+
+            if price:
+                queryset = queryset.filter(price=price)
+
+                serializer = ListCoursesSerializer(queryset, many=True)
 
                 return Response({'message': 'Course retrieved successfully', 'data': serializer.data}, status=status.HTTP_200_OK)
 
-            except Course.DoesNotExist:
+        except Course.DoesNotExist:
                 return Response({'message': 'Course not found'}, status=status.HTTP_404_NOT_FOUND)
 
         courses = Course.objects.all()

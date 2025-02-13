@@ -2,24 +2,13 @@ from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 from .models import *
 
-# class UserSerializer(serializers.ModelSerializer):
-#     token = serializers.CharField(write_only=True, required=False)
-
-#     class Meta:
-#         model = User
-#         fields = ['username', 'email', 'password', 'token']
-
-#     def create(self, validated_data):
-#         user = User.objects.create_user(**validated_data)
-#         token, created = Token.objects.get_or_create(user=user)
-#         return user
 
 class CreateCourseSerializer(serializers.ModelSerializer):
     """Serializer for Course creation """
 
     class Meta :
         model = Course
-        fields = ['title','description', 'price']
+        fields = ['id','title','description', 'price']
         read_only_fields = ['id']
 
 
@@ -28,7 +17,7 @@ class ListCoursesSerializer(serializers.ModelSerializer):
 
     class Meta :
         model = Course
-        fields = ['title','description', 'price']
+        fields = ['id','title','description', 'price']
         read_only_fields = ['id']
 
 
@@ -37,7 +26,7 @@ class UpdateCourseSerializer(serializers.ModelSerializer):
 
     class Meta :
         model = Course
-        fields = ['title','description', 'price']
+        fields = ['id','title','description', 'price']
         read_only_fields = ['id']
 
     def update(self,instance, validated_data):
