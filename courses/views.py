@@ -44,49 +44,47 @@ class CourseDetailApiView(APIView):
 
         """List Course"""
 
-
-
         try:
-            user_id = request.query_params.get('user_id')
+            """Optional params"""
+            course_id = request.query_params.get('course_id')
             price = request.query_params.get('price')
 
             queryset = Course.objects.all()
 
-            if user_id:
-                queryset = queryset.filter(user_id=user_id)
+            if course_id:
+                queryset = queryset.filter(id=course_id)
 
             if price:
                 queryset = queryset.filter(price=price)
 
-                serializer = ListCoursesSerializer(queryset, many=True)
-
-                return Response({'message': 'Course retrieved successfully', 'data': serializer.data}, status=status.HTTP_200_OK)
-
-        except Course.DoesNotExist:
-                return Response({'message': 'Course not found'}, status=status.HTTP_404_NOT_FOUND)
-
-        courses = Course.objects.all()
-
-        if not courses.exists():
-            return Response(
-                {'message': 'No courses available', 'data': []},
-                status=status.HTTP_204_NO_CONTENT
+            if not queryset.exists():
+                return Response(
+                {'message': 'No courses found matching the criteria', 'data': []},
+                status=status.HTTP_404_NOT_FOUND
             )
 
-        serializer = ListCoursesSerializer(courses, many=True)
-        return Response({'message': 'Data fetched successfully', 'data': serializer.data}, status = status.HTTP_200_OK)
+            serializer = ListCoursesSerializer(queryset, many=True)
+            return Response({'message': 'Course retrieved successfully', 'data': serializer.data}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+
+            return Response(
+            {'message': 'An error occurred while retrieving courses', 'error': str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
 
     def patch(self, request, course_id):
         """Update Course"""
 
         try:
-                course = Course.objects.get(pk=course_id)
-                serializer = UpdateCourseSerializer(course, data= request.data, partial=True)
-                if serializer.is_valid(raise_exception=True):
-                    serializer.save()
-                    return Response({'message': 'Course updated successfully', 'data': serializer.data}, status=status.HTTP_200_OK)
+            course = Course.objects.get(pk=course_id)
+            serializer = UpdateCourseSerializer(course, data= request.data, partial=True)
+            if serializer.is_valid(raise_exception=True):
+                serializer.save()
+                return Response({'message': 'Course updated successfully', 'data': serializer.data}, status=status.HTTP_200_OK)
 
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         except Course.DoesNotExist:
                 return Response({'message': 'Course not found'}, status=status.HTTP_404_NOT_FOUND)
@@ -112,6 +110,8 @@ class EnrollmentListCreateAPIView(APIView):
 
         user_id = request.query_params.get('user_id')
         course_id = request.query_params.get('course_id')
+
+
 
         queryset = Enrollment.objects.all()
 
