@@ -42,7 +42,7 @@ This is a mini Learning Management System (LMS) backend built with Django REST F
 
 ### **Course Management**
 - **List All Courses**:
-  - **GET** `https://mini-lms.onrender.com/courses/`
+  - **GET** `https://mini-lms.onrender.com/courses`
   - Response:
     ```json
     [
@@ -56,7 +56,7 @@ This is a mini Learning Management System (LMS) backend built with Django REST F
     ```
 
 - **Retrieve a Course**:
-  - **GET** `https://mini-lms.onrender.com/courses/<id>/`
+  - **GET** `https://mini-lms.onrender.com/courses/course_id=1&price=300`
   - Response:
     ```json
     {
@@ -68,7 +68,7 @@ This is a mini Learning Management System (LMS) backend built with Django REST F
     ```
 
 - **Create a Course**:
-  - **POST** `https://mini-lms.onrender.com/courses/`
+  - **POST** `https://mini-lms.onrender.com/courses`
   - Request Body:
     ```json
     {
@@ -88,7 +88,7 @@ This is a mini Learning Management System (LMS) backend built with Django REST F
     ```
 
 - **Update a Course**:
-  - **PUT** `https://mini-lms.onrender.com/courses/<id>/`
+  - **PUT** `https://mini-lms.onrender.com/courses/<id>`
   - Request Body:
     ```json
     {
@@ -108,14 +108,14 @@ This is a mini Learning Management System (LMS) backend built with Django REST F
     ```
 
 - **Delete a Course**:
-  - **DELETE** `https://mini-lms.onrender.com/courses/<id>/`
+  - **DELETE** `https://mini-lms.onrender.com/courses/<id>`
   - Response: `204 No Content`
 
 ---
 
 ### **Enrollment Management**
 - **List All Enrollments**:
-  - **GET** `https://mini-lms.onrender.com/enrollments/`
+  - **GET** `https://mini-lms.onrender.com/enrollments`
   - Response:
     ```json
     [
@@ -128,7 +128,7 @@ This is a mini Learning Management System (LMS) backend built with Django REST F
     ```
 
 - **Enroll a User in a Course**:
-  - **POST** `https://mini-lms.onrender.com/enrollments/`
+  - **POST** `https://mini-lms.onrender.com/enrollments`
   - Request Body:
     ```json
     {
@@ -145,7 +145,7 @@ This is a mini Learning Management System (LMS) backend built with Django REST F
     ```
 
 - **Retrieve an Enrollment by course id or user id**:
-  - **GET** `https://mini-lms.onrender.com/enrollments?course_id=1/`
+  - **GET** `https://mini-lms.onrender.com/enrollments?course_id=1`
   - Response:
     ```json
     {
